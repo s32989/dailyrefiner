@@ -1,0 +1,31 @@
+# BACKEND
+/backend/app/target/
+/backend/app/!.mvn/wrapper/maven-wrapper.jar
+/backend/app/!**/src/main/**/target/
+/backend/app/!**/src/test/**/target/
+/backend/app/src/main/resources/application.properties
+### STS ###
+/backend/app/.apt_generated
+/backend/app/.classpath
+/backend/app/.factorypath
+/backend/app/.project
+/backend/app/.settings
+/backend/app/.springBeans
+/backend/app/.sts4-cache
+### IntelliJ IDEA ###
+/backend/app/.idea
+/backend/app/*.iws
+/backend/app/*.iml
+/backend/app/*.ipr
+### NetBeans ###
+/backend/app/nbproject/private/
+/backend/app/nbbuild/
+/backend/app/dist/
+/backend/app/nbdist/
+/backend/app/.nb-gradle/
+/backend/app/build/
+/backend/app/!**/src/main/**/build/
+/backend/app/!**/src/test/**/build/
+### VS Code ###
+/backend/app/.vscode/
+/backend/app/HELP.md
