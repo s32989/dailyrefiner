@@ -1,19 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="page">
+      <li v-for="url in urlList" :key="url">
+        {{ url }}
+      </li>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: {},
+  data() {
+    return {
+      urlList: [],
+    };
+  },
+
+  methods: {
+    async getData() {
+      const res = await fetch("http://localhost:8080/getNews");
+      const finalRes = await res.json();
+      this.urlList = finalRes;
+    },
+  },
+  mounted() {
+    this.getData();
+  },
+};
 </script>
 
 <style>
@@ -23,6 +38,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+#page {
+  border: 100px;
+  border-style: solid;
+  border-color: grey;
 }
 </style>
