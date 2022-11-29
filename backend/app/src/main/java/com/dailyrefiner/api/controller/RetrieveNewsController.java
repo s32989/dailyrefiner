@@ -1,5 +1,6 @@
 package com.dailyrefiner.api.controller;
 
+import com.dailyrefiner.api.model.controller.NewsData;
 import com.dailyrefiner.api.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8081")
 public class RetrieveNewsController {
 
     @Autowired
@@ -19,7 +20,7 @@ public class RetrieveNewsController {
 
     @ResponseBody
     @GetMapping(value="/getNews")
-    private List<String> getNewsUrls()  {
-        return newsService.getNews();
+    private List<NewsData> getNewsUrls()  {
+        return newsService.getWorldNews();
     }
 }

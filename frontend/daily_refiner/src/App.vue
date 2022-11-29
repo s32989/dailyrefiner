@@ -1,28 +1,59 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="page">
+      <li v-for="postData in postDataList" :key="postData.value">
+        <a v-bind:href="postData.url">{{ postData.title }}</a>
+      </li>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: {},
+  data() {
+    return {
+      postDataList: [],
+    };
+  },
+
+  methods: {
+    async getDataConvertToSet() {
+      const res = await fetch("http://localhost:8080/getNews");
+      const finalRes = await res.json();
+      const setNews = new Set(finalRes);
+      this.postDataList = setNews;
+    },
+  },
+  mounted() {
+    this.getDataConvertToSet();
+  },
+};
 </script>
 
 <style>
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"),
+    url(./fonts/Montserrat-VariableFont_wght.ttf) format("truetype");
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+#page {
+  border: 100px;
+  border-style: solid;
+  border-color: grey;
+  box-shadow: inset 0px 0px 0px 6px;
+  border-radius: 10px;
+  padding: 10px;
+}
+a {
+  font-family: "Montserrat";
 }
 </style>

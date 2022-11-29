@@ -1,5 +1,6 @@
 package com.dailyrefiner.api.service;
 
+import com.dailyrefiner.api.model.controller.NewsData;
 import com.dailyrefiner.api.model.reddit.RedditResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,7 +23,9 @@ public class NewsService {
     @Value("${redditUrl}")
     private String redditUrl;
 
-    public List<String> getNews(){
+    List<NewsData> responseObj;
+
+    public List<NewsData> getWorldNews(){
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -38,12 +41,13 @@ public class NewsService {
         RedditResponse redditResponse = gson.fromJson(String.valueOf(redditResponseJSONObj.toJSONString()), RedditResponse.class);
         return filterResults(redditResponse.getData().getChildren());
     }
-    private List<String> filterResults(List<RedditResponse.ResponseData.Post> posts){
-        return posts
+    private List<NewsData> filterResults(List<RedditResponse.ResponseData.Post> posts){
+        responseObj = posts
                 .stream()
                 .filter(post -> approvedUrls.stream().anyMatch(post.getData().getUrl()::contains))
-                .map(post -> post.getData().getUrl())
+                .map(post -> new NewsData(post.getData().getUrl(), post.getData().getTitle()))
                 .collect(Collectors.toList());
+        return responseObj;
     }
 }
 
