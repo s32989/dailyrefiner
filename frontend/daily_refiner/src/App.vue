@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="page">
-      <li v-for="url in urlList" :key="url">
-        {{ url }}
+      <li v-for="postData in postDataList" :key="postData.value">
+        <a v-bind:href="postData.url">{{ postData.title }}</a>
       </li>
     </div>
   </div>
@@ -14,24 +14,30 @@ export default {
   components: {},
   data() {
     return {
-      urlList: [],
+      postDataList: [],
     };
   },
 
   methods: {
-    async getData() {
+    async getDataConvertToSet() {
       const res = await fetch("http://localhost:8080/getNews");
       const finalRes = await res.json();
-      this.urlList = finalRes;
+      const setNews = new Set(finalRes);
+      this.postDataList = setNews;
     },
   },
   mounted() {
-    this.getData();
+    this.getDataConvertToSet();
   },
 };
 </script>
 
 <style>
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"),
+    url(./fonts/Montserrat-VariableFont_wght.ttf) format("truetype");
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,5 +49,11 @@ export default {
   border: 100px;
   border-style: solid;
   border-color: grey;
+  box-shadow: inset 0px 0px 0px 6px;
+  border-radius: 10px;
+  padding: 10px;
+}
+a {
+  font-family: "Montserrat";
 }
 </style>
