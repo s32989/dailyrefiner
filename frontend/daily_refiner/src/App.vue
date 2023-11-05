@@ -1,9 +1,16 @@
 <template>
   <div id="app">
     <div id="page">
-      <li v-for="postData in postDataList" :key="postData.value">
-        <a v-bind:href="postData.url">{{ postData.title }}</a>
-      </li>
+      <table>
+        <h1>World News</h1>
+        <tr v-for="postData in postDataList" :key="postData.value" >
+          <a v-if="postData.type=='world'"  v-bind:href="postData.url">{{ postData.title }}</a>
+        </tr>
+        <h1>National News</h1>
+        <tr v-for="postData in postDataList" :key="postData.value" >
+          <a v-if="postData.type=='national'"  v-bind:href="postData.url">{{ postData.title }}</a>
+        </tr>
+    </table>
     </div>
   </div>
 </template>

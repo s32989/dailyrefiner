@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -27,6 +29,12 @@ public class AuthService {
     @Value("${authUrl}")
     private String authUrl;
 
+    @Value("${redditClientID}")
+    private String clientID;
+
+    @Value("${redditSecret}")
+    private String secret;
+
     @Value("${redditUser}")
     private String redditUser;
 
@@ -39,12 +47,15 @@ public class AuthService {
     public void getAuthToken(){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(redditUser, redditPassword);
+        headers.setBasicAuth(clientID, secret);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.put("User-Agent",
                 Collections.singletonList("spring.application.dailyrefiner"));
-        String body = "grant_type=client_credentials";
-        HttpEntity<String> request
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "password");
+        body.add("username", redditUser);
+        body.add("password", redditPassword);
+        HttpEntity<Map> request
                 = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(

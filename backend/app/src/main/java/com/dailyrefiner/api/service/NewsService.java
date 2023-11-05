@@ -20,32 +20,68 @@ public class NewsService {
     @Value("#{'${approvedUrls}'.split(',')}")
     List<String> approvedUrls;
 
-    @Value("${redditUrl}")
-    private String redditUrl;
+    @Value("${redditWorldNewsUrl}")
+    private String redditWorldNewsUrl;
 
+    @Value("${redditNationalNewsUrl}")
+    private String redditNationalNewsUrl;
     List<NewsData> responseObj;
 
-    public List<NewsData> getWorldNews(){
+    private List<NewsData> getWorldNews() {
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         String authToken = AuthService.getToken();
-        headers.setBearerAuth(authToken);
+        headers.setBasicAuth(authToken);
         headers.put("User-Agent",
                 Collections.singletonList("tomcat:com.dailyrefiner"));
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
         ResponseEntity<JSONObject> response
-                = restTemplate.exchange(redditUrl, HttpMethod.GET, entity, JSONObject.class);
+                = restTemplate.exchange(redditWorldNewsUrl, HttpMethod.GET, entity, JSONObject.class);
         JSONObject redditResponseJSONObj = response.getBody();
         Gson gson = new GsonBuilder().create();
         RedditResponse redditResponse = gson.fromJson(String.valueOf(redditResponseJSONObj.toJSONString()), RedditResponse.class);
-        return filterResults(redditResponse.getData().getChildren());
+        return filterResultsWorld(redditResponse.getData().getChildren());
     }
-    private List<NewsData> filterResults(List<RedditResponse.ResponseData.Post> posts){
+
+    private List<NewsData> getNationalNews() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        String authToken = AuthService.getToken();
+        headers.setBasicAuth(authToken);
+        headers.put("User-Agent",
+                Collections.singletonList("tomcat:com.dailyrefiner"));
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        ResponseEntity<JSONObject> response
+                = restTemplate.exchange(redditNationalNewsUrl, HttpMethod.GET, entity, JSONObject.class);
+        JSONObject redditResponseJSONObj = response.getBody();
+        Gson gson = new GsonBuilder().create();
+        RedditResponse redditResponse = gson.fromJson(String.valueOf(redditResponseJSONObj.toJSONString()), RedditResponse.class);
+        return filterResultsNational(redditResponse.getData().getChildren());
+    }
+
+    public List<NewsData> getNews() {
+        List<NewsData> finalResponse = getWorldNews();
+        finalResponse.addAll(getNationalNews());
+        return finalResponse;
+    }
+
+
+    private List<NewsData> filterResultsWorld(List<RedditResponse.ResponseData.Post> posts){
         responseObj = posts
                 .stream()
                 .filter(post -> approvedUrls.stream().anyMatch(post.getData().getUrl()::contains))
-                .map(post -> new NewsData(post.getData().getUrl(), post.getData().getTitle()))
+                .map(post -> new NewsData(post.getData().getUrl(), post.getData().getTitle(), "world"))
+                .collect(Collectors.toList());
+        return responseObj;
+    }
+
+    private List<NewsData> filterResultsNational(List<RedditResponse.ResponseData.Post> posts){
+        responseObj = posts
+                .stream()
+                .filter(post -> approvedUrls.stream().anyMatch(post.getData().getUrl()::contains))
+                .map(post -> new NewsData(post.getData().getUrl(), post.getData().getTitle(), "national"))
                 .collect(Collectors.toList());
         return responseObj;
     }

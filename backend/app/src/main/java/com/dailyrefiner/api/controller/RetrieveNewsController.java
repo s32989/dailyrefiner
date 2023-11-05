@@ -21,6 +21,6 @@ public class RetrieveNewsController {
     @ResponseBody
     @GetMapping(value="/getNews")
     private List<NewsData> getNewsUrls()  {
-        return newsService.getWorldNews();
+        return newsService.getNews();
     }
 }

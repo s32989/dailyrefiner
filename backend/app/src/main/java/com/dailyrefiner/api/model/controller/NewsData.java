@@ -4,6 +4,7 @@ public class NewsData {
 
     public String url;
     public String title;
+    public String type;
 
     public String getUrl() {
         return url;
@@ -20,9 +21,17 @@ public class NewsData {
     public void setTitle(String title) {
         this.title = title;
     }
+    public String getType() {
+        return type;
+    }
 
-    public NewsData(String url, String title) {
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public NewsData(String url, String title, String type) {
         this.url = url;
         this.title = title;
+        this.type = type;
     }
 }
