@@ -27,7 +27,7 @@ export default {
 
   methods: {
     async getDataConvertToSet() {
-      const res = await fetch("http://localhost:8080/getNews");
+      const res = await fetch("http://127.0.0.1:8000/news");
       const finalRes = await res.json();
       const setNews = new Set(finalRes);
       this.postDataList = setNews;
