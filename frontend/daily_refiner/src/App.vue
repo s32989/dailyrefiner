@@ -1,16 +1,21 @@
 <template>
   <div id="app">
     <div id="page">
+      <div>
       <table>
-        <h1>World News</h1>
+          <h1>World News</h1>
         <tr v-for="postData in postDataList" :key="postData.value" >
           <a v-if="postData.type=='world'"  v-bind:href="postData.url">{{ postData.title }}</a>
         </tr>
-        <h1>National News</h1>
+        
+        
+          <h1>National News</h1>
         <tr v-for="postData in postDataList" :key="postData.value" >
           <a v-if="postData.type=='national'"  v-bind:href="postData.url">{{ postData.title }}</a>
         </tr>
-    </table>
+      </table>
+    </div>
+    
     </div>
   </div>
 </template>
@@ -39,7 +44,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "~@/assets/scss/vendors/bootstrap-vue/index";
 @font-face {
   font-family: "Montserrat";
   src: local("Montserrat"),
