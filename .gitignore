@@ -31,3 +31,5 @@
 /backend/app/.vscode/
 /backend/app/HELP.md
 .idea/*
+
+/node_modules
