@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/daily_refiner.iml" filepath="$PROJECT_DIR$/.idea/daily_refiner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dailyrefiner.iml" filepath="$PROJECT_DIR$/.idea/dailyrefiner.iml" />
     </modules>
   </component>
 </project>
